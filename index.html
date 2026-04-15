@@ -1,0 +1,243 @@
+<!--
+  This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+  If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org.
+  Copyright (c) 2026 weirdo-kido
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content, viewport-fit=cover">
+    <title>weirgo</title>
+    <meta name="description" content="Semantic Sequential Command Line Interface">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="weirgo">
+    <meta property="og:description" content="Semantic Sequential Command Line Interface.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://raw.githubusercontent.com/weirdo-kido/weirgo/refs/heads/main/assets/og-img.png">
+    <meta name="twitter:title" content="weirgo">
+    <meta name="twitter:description" content="Semantic Sequential Command Line Interface.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/weirdo-kido/weirgo/refs/heads/main/assets/og-img.png">
+    <link rel="canonical" href="https://weirdo-kido.github.io/weirgo/">
+    <link rel="icon" type="image/png" sizes="192x192" href="/weirgo.png">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        :root {
+            --bg: #09031a; 
+            --surface: #160a2e;
+            --text: #f3e8ff;
+            --accent: #d946ef;
+            --accent-glow: rgba(217, 70, 239, 0.3);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background: var(--bg); 
+            color: var(--text);
+            font-family: 'ui-monospace', 'Cascadia Code', 'Source Code Pro', monospace;
+            height: 100dvh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden;
+            contain: content; 
+        }
+
+        .spacer { 
+            flex: 1; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            will-change: transform;
+        }
+
+        .logo { 
+            font-size: clamp(1rem, 5vw, 1.2rem);
+            opacity: 0.3; 
+            letter-spacing: 0.5rem; 
+            font-weight: 800;
+            text-transform: uppercase;
+            background: linear-gradient(to right, var(--accent), #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px var(--accent-glow));
+            user-select: none;
+        }
+
+        .input-area { 
+            padding: 1.5rem; 
+            padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+            background: var(--surface); 
+            border-top: 1px solid rgba(217, 70, 239, 0.1);
+            transform: translateZ(0); 
+        }
+
+        #cmd {
+            width: 100%; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            display: block;
+            background: #02010a; 
+            border: 2px solid #2e1065; 
+            color: var(--accent);
+            font-size: 1.1rem; 
+            padding: 16px 20px; 
+            border-radius: 12px; 
+            outline: none; 
+            transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+            appearance: none;
+            will-change: contents;
+            text-rendering: optimizeSpeed;
+        }
+
+        #cmd:focus { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 30px var(--accent-glow); 
+        }
+
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0,0,0,0); border: 0;
+        }
+
+        #cmd:focus-visible {
+           /* outline: 3px solid var(--text); */
+            outline-offset: 4px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="spacer" role="img" aria-label="weirgo">
+        <h1 class="logo">weirgo</h1>
+    </div>
+
+  <main>
+    <footer class="input-area">
+        <label for="cmd" class="sr-only">Type command</label>
+        <input 
+            type="text" 
+            id="cmd" 
+            placeholder="Type 'kido fuel'..." 
+            autofocus 
+            autocomplete="off" 
+            autocorrect="off"
+            autocapitalize="none"
+            spellcheck="false"
+            enterkeyhint="done"
+            aria-label="type command"
+        >
+    </footer>
+  </main>
+<script type="module">
+  /**
+   * @file Semantic Sequential CLI - Clean & Stable Edition
+   * @license MPL-2.0
+   */
+
+  const CONFIG = {
+    VIBRATE_MS: 45,
+    DEBOUNCE_MS: 800
+  };
+
+  const COMMANDS = [
+    // { id: 'google', keys: [',g'], url: "https://google.com/" },
+    { id: 'spoon', keys: [',1'], url: "https://weirdo-kido.github.io/Spoon/" },
+    { id: 'typety', keys: [',2'], url: "https://weirdo-kido.github.io/typety/" },
+    { id: 'unix13', keys: [',3'], url: "https://weirdo-kido.github.io/unix13-atom/" },
+    { id: 'void', keys: [',0'], url: "https://weirdo-kido.github.io/to-the-void/" },
+    //{ id: 'gpu', keys: [',5'], url: "https://weirdo-kido.github.io/" },
+    { id: 'fuel', keys: ['kido', 'fuel'], url: "https://ko-fi.com/weirdo_kido/" }, 
+    { id: 'error', keys: ['kido', 'error'], url: "https://x.com/weirdo_kido/" },
+    { id: 'update', keys: ['kido', 'update'], url: "https://bsky.app/profile/weirdo-kido.github.io" },
+    { id: 'github', keys: ['kido','code'], url: "https://github.com/weirdo-kido/" },
+    { id: 'youtube', keys: ['kido','show'], url: "https://m.youtube.com/@weirdoo-kido/" }
+  ];
+
+  const origins = [...new Set(COMMANDS.filter(c => c.url.startsWith('https')).map(c => new URL(c.url).origin))];
+  origins.forEach(origin => {
+    const link = document.createElement('link');
+    link.rel = 'preconnect';
+    link.href = origin;
+    document.head.appendChild(link);
+  });
+
+  const input = document.getElementById('cmd');
+  let timer = null;
+  let isExecuting = false;
+
+  const buildSequentialRegex = (keys) => {
+    const pattern = keys.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('.*');
+    return new RegExp(pattern, 'i');
+  };
+
+  const executeJump = (rawVal) => {
+    if (isExecuting) return;
+
+    const val = rawVal.trim().toLowerCase();
+    if (!val) return;
+
+    const performRedirect = (url) => {
+      isExecuting = true;
+      navigator.vibrate?.(CONFIG.VIBRATE_MS);
+      input.blur();
+      input.style.opacity = "0.5";
+      input.value = '';
+
+      location.assign(url);
+    };
+
+    if (val.startsWith(',')) {
+      if (val.length < 2) return;
+      const quick = COMMANDS.find(c => c.keys.includes(val));
+      if (quick) return performRedirect(quick.url);
+      return;
+    }
+
+    const match = COMMANDS.find(c => buildSequentialRegex(c.keys).test(val));
+    if (match) {
+      setTimeout(() => performRedirect(match.url), 250);
+    }
+  };
+
+  input.addEventListener('input', ({ target }) => {
+    if (isExecuting) return;
+
+    const val = target.value.trim();
+    clearTimeout(timer);
+    if (!val) return; 
+
+    const isShortcut = val.startsWith(',');
+    const delay = isShortcut ? 50 : (val.includes(' ') ? CONFIG.DEBOUNCE_MS : 300);
+    
+    timer = setTimeout(() => executeJump(val), delay);
+  });
+
+  window.addEventListener('pageshow', (event) => {
+    isExecuting = false;
+    input.value = '';
+    input.style.opacity = "1";
+    input.focus();
+  });
+
+  window.addEventListener('DOMContentLoaded', () => input.focus());
+  
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+
+</script>
+</body>
+</html>

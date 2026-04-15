@@ -8,9 +8,9 @@
   "theme_color": "#09031a",
 "icons": [
     {
-    "src":"weirgo.png",
-    "size": "any",
-    "type": "image/png",
+    "src":"favicon.svg",
+    "size": "192x192 512x512",
+    "type": "image/svg+xml",
     "purpose": "any maskable"
     }
   ]

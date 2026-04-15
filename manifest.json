@@ -6,9 +6,11 @@
   "background_color": "#09031a",
   "theme_color": "#09031a",
 "icons": [
-    "src":"/weirgo.png",
+    {
+    "src":"weirgo.png",
     "size": "192x192",
     "type": "image/png",
     "purpose": "any maskable"
+    }
   ]
 }

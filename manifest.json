@@ -1,15 +1,16 @@
 {
   "name": "weirgo",
   "short_name": "weirgo",
-  "start_url": ".",
+  "start_url": "/weirgo/",
+  "scope": "/weirgo/",
   "display": "standalone",
   "background_color": "#09031a",
   "theme_color": "#09031a",
 "icons": [
     {
-    "src":"favicon.svg",
+    "src":"weirgo.png",
     "size": "any",
-    "type": "image/svg+xml",
+    "type": "image/png",
     "purpose": "any maskable"
     }
   ]

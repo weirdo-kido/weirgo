@@ -8,6 +8,7 @@ const ASSETS = [
   '/weirgo/', 
   'index.html', 
   'manifest.json',
+  'weirgo.png'
 ];
 
 self.addEventListener('install', e => {

@@ -17,4 +17,4 @@ n|pages|license
 ---
 
 Licensed under **[MPLv2](LICENSE)**  
-Kaga gua _[minify](index.html)_ bjir, 245 baris kode doang itu (｀Δ´)
+Kaga gua _[minify](index.html)_ bjir, 245 + 4 baris kode doang itu (｀Δ´)

@@ -161,11 +161,12 @@
     { id: 'unix13', keys: [',3'], url: "https://weirdo-kido.github.io/unix13-atom/" },
     { id: 'void', keys: [',0'], url: "https://weirdo-kido.github.io/to-the-void/" },
     //{ id: 'gpu', keys: [',5'], url: "https://weirdo-kido.github.io/" },
-    { id: 'fuel', keys: ['kido', 'fuel'], url: "https://ko-fi.com/weirdo_kido/" }, 
-    { id: 'error', keys: ['kido', 'error'], url: "https://x.com/weirdo_kido/" },
-    { id: 'update', keys: ['kido', 'update'], url: "https://bsky.app/profile/weirdo-kido.github.io" },
-    { id: 'github', keys: ['kido','code'], url: "https://github.com/weirdo-kido/" },
-    { id: 'youtube', keys: ['kido','show'], url: "https://m.youtube.com/@weirdoo-kido/" }
+    { id: 'help', keys: [',help'], url: "https://github.com/weirdo-kido/weirgo/blob/main/README.md" }, 
+    { id: 'fuel', keys: ['kido', 'fuel'], url: "https://ko-fi.com/weirdo_kido/" }
+   // { id: 'error', keys: ['kido', 'error'], url: "https://x.com/weirdo_kido/" },
+   // { id: 'update', keys: ['kido', 'update'], url: "https://bsky.app/profile/weirdo-kido.github.io" },
+    // { id: 'github', keys: ['kido','code'], url: "https://github.com/weirdo-kido/" },
+   // { id: 'youtube', keys: ['kido','show'], url: "https://m.youtube.com/@weirdoo-kido/" }
   ];
 
   const origins = [...new Set(COMMANDS.filter(c => c.url.startsWith('https')).map(c => new URL(c.url).origin))];

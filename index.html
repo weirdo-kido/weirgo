@@ -145,7 +145,7 @@
   </main>
 <script type="module">
   /**
-   * @file Semantic Sequential CLI - Clean & Stable Edition
+   * @file Semantic Sequential CLI - Optimized Edition
    * @license MPL-2.0
    */
 
@@ -155,35 +155,46 @@
   };
 
   const COMMANDS = [
-    // { id: 'google', keys: [',g'], url: "https://google.com/" },
     { id: 'spoon', keys: [',1'], url: "https://weirdo-kido.github.io/Spoon/" },
     { id: 'typety', keys: [',2'], url: "https://weirdo-kido.github.io/typety/" },
     { id: 'unix13', keys: [',3'], url: "https://weirdo-kido.github.io/unix13-atom/" },
     { id: 'void', keys: [',0'], url: "https://weirdo-kido.github.io/to-the-void/" },
-    //{ id: 'gpu', keys: [',5'], url: "https://weirdo-kido.github.io/" },
     { id: 'help', keys: [',help'], url: "https://raw.githubusercontent.com/weirdo-kido/weirgo/refs/heads/main/README.md" }, 
     { id: 'fuel', keys: ['kido', 'fuel'], url: "https://ko-fi.com/weirdo_kido/" }
-   // { id: 'error', keys: ['kido', 'error'], url: "https://x.com/weirdo_kido/" },
-   // { id: 'update', keys: ['kido', 'update'], url: "https://bsky.app/profile/weirdo-kido.github.io" },
-    // { id: 'github', keys: ['kido','code'], url: "https://github.com/weirdo-kido/" },
-   // { id: 'youtube', keys: ['kido','show'], url: "https://m.youtube.com/@weirdoo-kido/" }
   ];
 
-  const origins = [...new Set(COMMANDS.filter(c => c.url.startsWith('https')).map(c => new URL(c.url).origin))];
-  origins.forEach(origin => {
-    const link = document.createElement('link');
-    link.rel = 'preconnect';
-    link.href = origin;
-    document.head.appendChild(link);
-  });
+  const COMMAND_DATA = COMMANDS.map(c => ({
+    ...c,
+    regex: new RegExp(c.keys.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('.*'), 'i')
+  }));
+
+  const setupPreconnect = () => {
+    const origins = [...new Set(COMMANDS.filter(c => c.url.startsWith('https')).map(c => new URL(c.url).origin))];
+    const fragment = document.createDocumentFragment();
+    origins.slice(0, 10).forEach(origin => {
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = origin;
+      fragment.appendChild(link);
+    });
+    document.head.appendChild(fragment);
+  };
+  setupPreconnect();
 
   const input = document.getElementById('cmd');
   let timer = null;
   let isExecuting = false;
 
-  const buildSequentialRegex = (keys) => {
-    const pattern = keys.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('.*');
-    return new RegExp(pattern, 'i');
+  const performRedirect = (url) => {
+    if (!url) return;
+    isExecuting = true;
+    navigator.vibrate?.(CONFIG.VIBRATE_MS);
+
+    input.blur();
+    input.style.opacity = "0.5";
+    input.value = '';
+
+    location.assign(url);
   };
 
   const executeJump = (rawVal) => {
@@ -192,26 +203,16 @@
     const val = rawVal.trim().toLowerCase();
     if (!val) return;
 
-    const performRedirect = (url) => {
-      isExecuting = true;
-      navigator.vibrate?.(CONFIG.VIBRATE_MS);
-      input.blur();
-      input.style.opacity = "0.5";
-      input.value = '';
-
-      location.assign(url);
-    };
-
     if (val.startsWith(',')) {
       if (val.length < 2) return;
-      const quick = COMMANDS.find(c => c.keys.includes(val));
+      const quick = COMMAND_DATA.find(c => c.keys.includes(val));
       if (quick) return performRedirect(quick.url);
       return;
     }
 
-    const match = COMMANDS.find(c => buildSequentialRegex(c.keys).test(val));
+    const match = COMMAND_DATA.find(c => c.regex.test(val));
     if (match) {
-      setTimeout(() => performRedirect(match.url), 250);
+      setTimeout(() => performRedirect(match.url), 200);
     }
   };
 
@@ -228,18 +229,20 @@
     timer = setTimeout(() => executeJump(val), delay);
   });
 
-  window.addEventListener('pageshow', (event) => {
+  window.addEventListener('pageshow', () => {
     isExecuting = false;
     input.value = '';
     input.style.opacity = "1";
     input.focus();
   });
 
-  window.addEventListener('DOMContentLoaded', () => input.focus());
-  
- if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+    input.focus();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+  });
 
 </script>
 </body>

@@ -77,8 +77,8 @@
         .input-area { 
             padding: 1.5rem; 
             padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
-            background: var(--surface); 
-            border-top: 1px solid rgba(217, 70, 239, 0.1);
+            background: var(--bg); 
+            /* border-top: 1px solid rgba(217, 70, 239, 0.1); */
             transform: translateZ(0); 
         }
 
@@ -92,7 +92,7 @@
             color: var(--accent);
             font-size: 1.1rem; 
             padding: 16px 20px; 
-            border-radius: 12px; 
+            border-radius: 24px; 
             outline: none; 
             transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
             appearance: none;
@@ -139,7 +139,6 @@
             autocapitalize="none"
             spellcheck="false"
             enterkeyhint="done"
-            aria-label="type command"
         >
     </footer>
   </main>
@@ -159,6 +158,7 @@
     { id: 'typety', keys: [',2'], url: "https://weirdo-kido.github.io/typety/" },
     { id: 'unix13', keys: [',3'], url: "https://weirdo-kido.github.io/unix13-atom/" },
     { id: 'void', keys: [',0'], url: "https://weirdo-kido.github.io/to-the-void/" },
+    { id: 'spantastic', keys: ['.0js'], url: "https://weirdo-kido.github.io/spantastic/" },
     { id: 'help', keys: [',help'], url: "https://raw.githubusercontent.com/weirdo-kido/weirgo/refs/heads/main/README.md" }, 
     { id: 'fuel', keys: ['kido', 'fuel'], url: "https://ko-fi.com/weirdo_kido/" }
   ];

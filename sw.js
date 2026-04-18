@@ -34,12 +34,10 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(r => {
       return r || fetch(e.request).then(res => {
-        /*
         if (res.status === 200) {
           let resClone = res.clone();
           caches.open(C).then(c => c.put(e.request, resClone));
         }
-        */
         return res;
       }).catch(() => {
         if (e.request.mode === 'navigate') {

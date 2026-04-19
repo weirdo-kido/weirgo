@@ -20,7 +20,7 @@ type `.0js`?
 ---
 
 Licensed under **[MPLv2](LICENSE)**  
-Kaga gua _[minify](index.html)_ bjir, 245 + 5 baris kode doang itu (｀Δ´)
+Kaga gua _[minify](index.html)_ bjir, 245 + 31 baris kode doang itu (｀Δ´)
 
 <details>
 

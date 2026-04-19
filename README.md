@@ -12,7 +12,6 @@ n|pages|license
 |2|typety - Chat to Clipboard|MIT
 |3|unix13 atom - Convert 13 unix epoch to ISO date|MIT
 |5|typebit - An Append-Only Log digital art|GPLv2
-|?|maybe next update ...|...
 |0|to the void|MIT  
 
 type `.0js`?

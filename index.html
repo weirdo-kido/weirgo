@@ -22,9 +22,13 @@
     <meta name="twitter:image" content="https://raw.githubusercontent.com/weirdo-kido/weirgo/refs/heads/main/assets/og-img.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="canonical" href="https://weirdo-kido.github.io/weirgo/">
-    <link rel="icon" type="image/png" href="weirgo.png">
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json?v=20260419">
+    <link rel="icon" type="image/png" href="weirgo.png?v=20260419">
+    <link rel="preload" href="weirgo.png?v=20260419" as="image" type="image/png"> 
     <style>
         :root {
             --bg: #09031a; 
@@ -240,11 +244,32 @@
   document.addEventListener('DOMContentLoaded', () => {
     input.focus();
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    }
-  });
-
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js?v=20260419', {
+      scope: '/weirgo/',
+      updateViaCache: 'none'
+    })
+    .then(reg => {
+      console.log('[PWA] SW registered:', reg.scope);
+      
+      setInterval(() => {
+        reg.update().catch(() => {});
+      }, 6 * 60 * 60 * 1000);
+      
+      reg.onupdatefound = () => {
+        const newWorker = reg.installing;
+        newWorker.onstatechange = () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            console.log('[PWA] Update available! Refresh to activate.');
+          }
+        };
+      };
+    })
+    .catch(err => {
+      console.error('[PWA] SW registration failed:', err);
+    });
+  }
+});
 </script>
 </body>
 </html>

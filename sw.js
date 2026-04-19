@@ -16,7 +16,10 @@ self.addEventListener('install', e => {
     caches.open(CACHE_VERSION).then(cache => {
       console.log('[SW] Pre-caching static assets');
       return cache.addAll(STATIC_ASSETS);
-    }).then(() => self.skipWaiting())
+    }).then(() => {
+  console.log('[SW] New version installed, forcing skip wait...');
+  self.skipWaiting();
+})
   );
 });
 

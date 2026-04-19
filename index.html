@@ -260,7 +260,8 @@
         const newWorker = reg.installing;
         newWorker.onstatechange = () => {
           if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            console.log('[PWA] Update available! Refresh to activate.');
+            console.log('[PWA] Update available! Activating now...');
+            newWorker.postMessage({ type: 'SKIP_WAITING' });
           }
         };
       };

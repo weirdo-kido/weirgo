@@ -1,9 +1,9 @@
 {
   "name": "weirgo",
   "short_name": "weirgo",
-  "start_url": "/weirgo/",
+  "start_url": "/weirgo/index.html",
   "scope": "/weirgo/",
-  "display": "standalone",
+  "display": "minimal-ui",
   "background_color": "#09031a",
   "theme_color": "#09031a",
 "icons": [
@@ -13,5 +13,7 @@
     "type": "image/svg+xml",
     "purpose": "any maskable"
     }
-  ]
+  ],
+  "prefer_related_applications": false,
+  "orientation": "portrait-primary"
 }

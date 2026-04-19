@@ -1,49 +1,83 @@
 /* 
  * Licensed under the Mozilla Public License, v. 2.0.
- * weirgo - Conservative Caching Strategy
+ * weirgo - Smart Stale-While-Revalidate Strategy
  */
 
-const C = 'v1';
-const ASSETS = [
-  '/weirgo/', 
-  'index.html', 
-  'manifest.json',
-  'weirgo.png'
+const CACHE_VERSION = 'v:20260419';
+const STATIC_ASSETS = [
+  '/weirgo/',
+  '/weirgo/index.html',
+  '/weirgo/manifest.json',
+  '/weirgo/weirgo.png'
 ];
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(C).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE_VERSION).then(cache => {
+      console.log('[SW] Pre-caching static assets');
+      return cache.addAll(STATIC_ASSETS);
+    }).then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.filter(k => k !== C).map(k => caches.delete(k))
-    )).then(() => self.clients.claim())
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(k => k !== CACHE_VERSION).map(k => caches.delete(k))
+      );
+    }).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
+  const { request } = e;
+  const url = new URL(request.url);
+
+  if (url.origin !== self.location.origin || !url.pathname.startsWith('/weirgo')) {
+    return;
+  }
+
+  if (request.method === 'HEAD') {
+    e.respondWith(fetch(request));
+    return;
+  }
+
+  if (request.method !== 'GET') return;
+
+  if (request.mode === 'navigate' || url.pathname.endsWith('.html')) {
+    e.respondWith(
+      fetch(request)
+        .then(res => {
+          if (res.ok) {
+            const clone = res.clone();
+            caches.open(CACHE_VERSION).then(cache => cache.put(request, clone));
+          }
+          return res;
+        })
+        .catch(() => caches.match('/weirgo/index.html'))
+    );
+    return;
+  }
 
   e.respondWith(
-    caches.open(C).then(cache => {
-      return cache.match(e.request).then(cachedResponse => {
-
-        const fetchPromise = fetch(e.request).then(networkResponse => {
-          if (networkResponse.ok) {
-            cache.put(e.request, networkResponse.clone());
+    caches.match(request).then(cached => {
+      const networked = fetch(request)
+        .then(res => {
+          if (res.ok) {
+            const clone = res.clone();
+            caches.open(CACHE_VERSION).then(cache => cache.put(request, clone));
           }
-          return networkResponse;
-        }).catch(err => {
-          if (e.request.mode === 'navigate') return caches.match('index.html');
-          throw err;
-        });
+          return res;
+        })
+        .catch(() => {});
 
-        return cachedResponse || fetchPromise;
-      });
+      return cached || networked;
     })
   );
+});
+
+self.addEventListener('message', e => {
+  if (e.data?.type === 'SKIP_WAITING') self.skipWaiting();
+  if (e.data?.type === 'CLIENTS_CLAIM') self.clients.claim();
 });

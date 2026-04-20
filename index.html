@@ -240,41 +240,33 @@
     input.focus();
 
   if ('serviceWorker' in navigator) {
-  let refreshing = false;
-
-  navigator.serviceWorker.register('./sw.js', {
-    scope: './',
-    updateViaCache: 'none'
-  })
-  .then(reg => {
-    console.log('[PWA] SW registered:', reg.scope);
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
+    navigator.serviceWorker.register('./sw.js?v=20260420', {
+      scope: '/weirgo/',
+      updateViaCache: 'none'
+    })
+    .then(reg => {
+      console.log('[PWA] SW registered:', reg.scope);
+      
+      setInterval(() => {
         reg.update().catch(() => {});
-      }
-    });
-
-    setInterval(() => reg.update().catch(() => {}), 6 * 60 * 60 * 1000);
-    
-    reg.onupdatefound = () => {
-      const newWorker = reg.installing;
-      newWorker.onstatechange = () => {
-        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          console.log('[PWA] New version ready, triggering update...');
-          newWorker.postMessage({ type: 'SKIP_WAITING' });
-        }
+      }, 6 * 60 * 60 * 1000);
+      
+      reg.onupdatefound = () => {
+        const newWorker = reg.installing;
+        newWorker.onstatechange = () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            console.log('[PWA] Update available! Activating now...');
+            newWorker.postMessage({ type: 'SKIP_WAITING' });
+          }
+        };
       };
-    };
-  })
-  .catch(err => console.error('[PWA] Failed:', err));
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (!refreshing) {
-      window.location.reload();
-      refreshing = true;
-    }
-  });
-}
-
+    })
+    .catch(err => {
+      console.error('[PWA] SW registration failed:', err);
+    });
+  }
+});
+  
 </script>
 </body>
 </html>

@@ -22,12 +22,9 @@
     <meta name="twitter:image" content="https://raw.githubusercontent.com/weirdo-kido/weirgo/refs/heads/main/assets/og-img.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <link rel="canonical" href="https://weirdo-kido.github.io/weirgo/">
-    <link rel="manifest" href="manifest.json?v=20260420">
-    <link rel="icon" type="image/png" href="weirgo.png?v=20260420">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="weirgo.png">
     <style>
         :root {
             --bg: #09031a; 
@@ -243,32 +240,41 @@
     input.focus();
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js?v=20260420', {
-      scope: '/weirgo/',
-      updateViaCache: 'none'
-    })
-    .then(reg => {
-      console.log('[PWA] SW registered:', reg.scope);
-      
-      setInterval(() => {
+  let refreshing = false;
+
+  navigator.serviceWorker.register('./sw.js', {
+    scope: '/weirgo/',
+    updateViaCache: 'none'
+  })
+  .then(reg => {
+    console.log('[PWA] SW registered:', reg.scope);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
         reg.update().catch(() => {});
-      }, 6 * 60 * 60 * 1000);
-      
-      reg.onupdatefound = () => {
-        const newWorker = reg.installing;
-        newWorker.onstatechange = () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            console.log('[PWA] Update available! Activating now...');
-            newWorker.postMessage({ type: 'SKIP_WAITING' });
-          }
-        };
-      };
-    })
-    .catch(err => {
-      console.error('[PWA] SW registration failed:', err);
+      }
     });
-  }
-});
+
+    setInterval(() => reg.update().catch(() => {}), 6 * 60 * 60 * 1000);
+    
+    reg.onupdatefound = () => {
+      const newWorker = reg.installing;
+      newWorker.onstatechange = () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          console.log('[PWA] New version ready, triggering update...');
+          newWorker.postMessage({ type: 'SKIP_WAITING' });
+        }
+      };
+    };
+  })
+  .catch(err => console.error('[PWA] Failed:', err));
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!refreshing) {
+      window.location.reload();
+      refreshing = true;
+    }
+  });
+}
+
 </script>
 </body>
 </html>

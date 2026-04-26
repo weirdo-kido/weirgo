@@ -153,13 +153,14 @@
   };
 
   const COMMANDS = [
-    { id: 'spoon', keys: [',1'], url: "https://weirdo-kido.github.io/Spoon/" },
-    { id: 'typety', keys: [',2'], url: "https://weirdo-kido.github.io/typety/" },
-    { id: 'unix13', keys: [',3'], url: "https://weirdo-kido.github.io/unix13-atom/" },
-    { id: 'typebit', keys: [',5'], url: "https://weirdo-kido.github.io/typebit/" },
-    { id: 'void', keys: [',0'], url: "https://weirdo-kido.github.io/to-the-void/" },
-    { id: 'spantastic', keys: ['.0js'], url: "https://weirdo-kido.github.io/spantastic/" },
-    { id: 'help', keys: [',help'], url: "https://raw.githubusercontent.com/weirdo-kido/weirgo/refs/heads/main/README.md" }, 
+    { id: 'spoon', keys: [',','1'], url: "https://weirdo-kido.github.io/Spoon/" },
+    { id: 'typety', keys: [',','2'], url: "https://weirdo-kido.github.io/typety/" },
+    { id: 'unix13', keys: [',','3'], url: "https://weirdo-kido.github.io/unix13-atom/" },
+    { id: 'typebit', keys: [',','5'], url: "https://weirdo-kido.github.io/typebit/" },
+    { id: 'md-lite', keys: [',','6'], url: "https://weirdo-kido.github.io/md-lite/" },
+    { id: 'void', keys: [',','0'], url: "https://weirdo-kido.github.io/to-the-void/" },
+    { id: 'spantastic', keys: ['.','0js'], url: "https://weirdo-kido.github.io/spantastic/" },
+    { id: 'help', keys: [',','help'], url: "https://raw.githubusercontent.com/weirdo-kido/weirgo/refs/heads/main/README.md" }, 
     { id: 'fuel', keys: ['kido', 'fuel'], url: "https://ko-fi.com/weirdo_kido/" }
   ];
 
@@ -240,7 +241,7 @@
     input.focus();
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js?v=20260420', {
+    navigator.serviceWorker.register('./sw.js?v=20260426', {
       scope: '/weirgo/',
       updateViaCache: 'none'
     })

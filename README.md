@@ -1,5 +1,12 @@
-## [weirgo](https://weirdo-kido.github.io/weirgo/)
-
+```
+__      __      __  ______  _____  _____    _____   ____  
+\ \    /  \    / / |  ____||_   _||  __ \  / ____| / __ \ 
+ \ \  / /\ \  / /  | |__     | |  | |__) || |  __ | |  | |
+  \ \/ /  \ \/ /   |  __|    | |  |  _  / | | |_ || |  | |
+   \  /    \  /    | |____  _| |_ | | \ \ | |__| || |__| |
+    \/      \/     |______||_____||_|  \_\ \_____| \____/ 
+```
+<br>
 cli experience at phone (works at desktop too) </br>
 
 ### shorcut
@@ -12,6 +19,7 @@ n|pages|license
 |2|typety - Chat to Clipboard|MIT
 |3|unix13 atom - Convert 13 unix epoch to ISO date|MIT
 |5|typebit - An Append-Only Log digital art|GPLv2
+|6|md lite - Simple Modern Markdown|MPLv2
 |0|to the void|MIT  
 
 type `.0js`?

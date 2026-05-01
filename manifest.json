@@ -6,7 +6,8 @@
   "display": "standalone",
   "background_color": "#09031a",
   "theme_color": "#09031a",
-"icons": [
+  "description": "Semantic Sequential Command Line Interface.",
+  "icons": [
     {
     "src": "weirgo.png",
     "size": "192x192",

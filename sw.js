@@ -3,7 +3,7 @@
  * weirgo - Smart Stale-While-Revalidate Strategy
  */
 
-const CACHE_VERSION = 'v:20260501';
+const CACHE_VERSION = 'v:20260502';
 const STATIC_ASSETS = [
   '/weirgo/',
   '/weirgo/index.html',

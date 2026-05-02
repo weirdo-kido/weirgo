@@ -10,10 +10,16 @@
   "description": "Semantic Sequential Command Line Interface.",
   "icons": [
     {
-    "src": "weirgo.png",
+    "src": "assets/weirgo-192.png",
     "size": "192x192",
     "type": "image/png",
     "purpose": "any"
+    },
+    {
+    "src": "weirgo.png",
+    "size": "192x192",
+    "type": "image/png",
+    "purpose": "maskable"
     },
     {
     "src": "assets/weirgo-512.png",

@@ -22,12 +22,12 @@ n|pages|license
 |6|md lite - Simple Modern Markdown|MPLv2
 |0|to the void|MIT  
 
-type `.0js`?
+~~type `.0js`?~~
 
 ---
 
 Licensed under **[MPLv2](LICENSE)**  
-Kaga gua _[minify](https://raw.githubusercontent.com/weirdo-kido/weirgo/refs/heads/main/index.html)_ bjir, 245 + 31 baris kode doang itu (｀Δ´)
+Kaga gua _[minify](https://raw.githubusercontent.com/weirdo-kido/weirgo/refs/heads/main/index.html)_ bjir ~~245 + 31 baris kode doang itu~~ (｀Δ´)
 
 <details>
 

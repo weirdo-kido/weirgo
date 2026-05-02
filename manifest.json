@@ -4,6 +4,7 @@
   "start_url": "/weirgo/index.html",
   "scope": "/weirgo/",
   "display": "standalone",
+  "lang": "en",
   "background_color": "#09031a",
   "theme_color": "#09031a",
   "description": "Semantic Sequential Command Line Interface.",
@@ -28,6 +29,12 @@
       "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow"
+    },
+    {
+      "src": "assets/Screenshot-1280x720.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ],
   "prefer_related_applications": false,
